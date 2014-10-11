@@ -328,7 +328,6 @@ public class OrderBook {
 		return fileStr.toString();
 	}
 
-
 	public List<Trade> getTape() {
 		return tape;
 	}
