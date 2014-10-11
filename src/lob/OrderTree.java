@@ -64,20 +64,20 @@ public class OrderTree {
 		return orderMap.containsKey(id);
 	}
 	
-	public void insertOrder(Order quote) {
-		int quoteID = quote.getqId();
-		double quotePrice = quote.getPrice();
-		if (orderExists(quoteID)) {
-			removeOrderByID(quoteID);
+	public void insertOrder(int time, int qty, int firmId, String side,
+							int orderId, double price) {
+		if (orderExists(orderId)) {
+			removeOrderByID(orderId);
 		}
 		nOrders += 1;
-		if (!priceExists(quotePrice)) {
-			createPrice(quotePrice);
+		if (!priceExists(price)) {
+			createPrice(price);
 		}
-		quote.setoL(priceMap.get(quotePrice));
-		priceMap.get(quotePrice).appendOrder(quote);
-		orderMap.put(quoteID, quote);
-		volume += quote.getQuantity();
+		Order order = new Order(orderId, time, qty, firmId, side, price);
+		order.setoL(priceMap.get(price));
+		priceMap.get(price).appendOrder(order);
+		orderMap.put(orderId, order);
+		volume += order.getQuantity();
 	}
 	
 	public void updateOrderQty(int qty, int qId) {

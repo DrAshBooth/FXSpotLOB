@@ -12,7 +12,7 @@ public class OrderReport {
 	 */
 	private ArrayList<Trade> trades = new ArrayList<Trade>();
 	private boolean orderInBook = false;
-	private Order order;
+	private HashMap<String, String> order = new HashMap<String, String>();
 	
 	public OrderReport(ArrayList<Trade> trades, 
 					   boolean orderInBook) {
@@ -20,12 +20,17 @@ public class OrderReport {
 		this.orderInBook = orderInBook;
 	}
 
-	public Order getOrder() {
+	public HashMap<String, String> getOrder() {
 		return order;
 	}
 	
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setOrder(int time, int qty, String side,
+			  			 int orderId, double price) {
+		this.order.put("time", String.valueOf(time));
+		this.order.put("qty", String.valueOf(qty));
+		this.order.put("side", String.valueOf(side));
+		this.order.put("orderId", String.valueOf(orderId));
+		this.order.put("price", String.valueOf(price));
 	}
 
 	public ArrayList<Trade> getTrades() {

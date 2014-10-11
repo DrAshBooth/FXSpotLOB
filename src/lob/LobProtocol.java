@@ -21,7 +21,7 @@ public class LobProtocol {
 		this.lob = lob; 
 	}
 	
-	public String processInput(String inputString) {
+	public String processInput(int time, String inputString) {
 		
 		String outputString = null;
 		
@@ -42,6 +42,8 @@ public class LobProtocol {
 				// do market stuff
 				String side = messageMap.get("side");
 				int qty = Integer.parseInt(messageMap.get("qty"));
+				int takerId = Integer.parseInt(messageMap.get("firmId"));
+				lob.processMarketOrder(time, side, qty, takerId, false);
 				break;
 			case "limit":
 				// do limit stuff

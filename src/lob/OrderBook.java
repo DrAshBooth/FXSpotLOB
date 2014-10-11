@@ -31,7 +31,6 @@ public class OrderBook {
 	private OrderTree bids = new OrderTree();
 	private OrderTree asks = new OrderTree();
 	private double tickSize;
-	private int time;
 	private int nextQuoteID;
 	private int lastOrderSign;
 	
@@ -44,7 +43,6 @@ public class OrderBook {
 		tape.clear();
 		bids.reset();
 		asks.reset();
-		time = 0;
 		nextQuoteID = 0;
 		lastOrderSign=1;
 	}
@@ -63,27 +61,7 @@ public class OrderBook {
 		return rounded.doubleValue();
 	}
 	
-	
-	public OrderReport processOrder(Order quote, boolean verbose) {
-		boolean isLimit = quote.isLimit();
-		OrderReport oReport;
-		// Update time
-		this.time = quote.getTimestamp();
-		if (quote.getQuantity() <= 0 ) {
-			throw new IllegalArgumentException("processOrder() given qty <= 0");
-		}
-		if (isLimit) {
-			double clippedPrice = clipPrice(quote.getPrice());
-			quote.setPrice(clippedPrice);
-			oReport = processLimitOrder(quote, verbose);
-		} else {
-			oReport = processMarketOrder(quote, verbose);
-		}
-		return oReport;
-	}
-	
-	
-	private OrderReport processMarketOrder(int time, String side, 
+	public OrderReport processMarketOrder(int time, String side, 
 											int qty, int takerId, boolean verbose) {
 		ArrayList<Trade> trades = new ArrayList<Trade>();
 		int qtyRemaining = qty;
@@ -112,27 +90,28 @@ public class OrderBook {
 	}
 	
 	
-	private OrderReport processLimitOrder(Order quote, 
-										  boolean verbose) {
+	public OrderReport processLimitOrder(int time, String side, int qty, 
+										 double price, int firmId, 
+										 int traderId, boolean verbose) {
 		boolean orderInBook = false;
+		int orderId = this.nextQuoteID;
 		ArrayList<Trade> trades = new ArrayList<Trade>();
-		String side = quote.getSide();
-		int qtyRemaining = quote.getQuantity();
-		double price = quote.getPrice();
+		int qtyRemaining = qty;
+		price = this.clipPrice(price);
 		if (side=="bid") {
 			this.lastOrderSign = 1;
 			while ((this.asks.getnOrders() > 0) && 
 					(qtyRemaining > 0) && 
 					(price >= asks.minPrice())) {
 				OrderList ordersAtBest = asks.minPriceList();
-				qtyRemaining = processOrderList(trades, ordersAtBest, qtyRemaining,
-												quote, verbose);
+				qtyRemaining = this.processOrderList(trades, ordersAtBest, 
+													 qtyRemaining, side, 
+													 traderId, time, verbose);
 			}
 			// If volume remains, add order to book
 			if (qtyRemaining > 0) {
-				quote.setqId(this.nextQuoteID);
-				quote.setQuantity(qtyRemaining);
-				this.bids.insertOrder(quote);
+				this.bids.insertOrder(time, qtyRemaining, firmId, side,
+									  this.nextQuoteID, price);
 				orderInBook = true;
 				this.nextQuoteID+=1;
 			} else {
@@ -144,14 +123,14 @@ public class OrderBook {
 					(qtyRemaining > 0) && 
 					(price <= bids.maxPrice())) {
 				OrderList ordersAtBest = bids.maxPriceList();
-				qtyRemaining = processOrderList(trades, ordersAtBest, qtyRemaining,
-												quote, verbose);
+				qtyRemaining = this.processOrderList(trades, ordersAtBest, 
+						 							 qtyRemaining, side, 
+						 							 traderId, time, verbose);
 			}
 			// If volume remains, add to book
 			if (qtyRemaining > 0) {
-				quote.setqId(this.nextQuoteID);
-				quote.setQuantity(qtyRemaining);
-				this.asks.insertOrder(quote);
+				this.asks.insertOrder(time, qtyRemaining, firmId, side,
+						  			  this.nextQuoteID, price);
 				orderInBook = true;
 				this.nextQuoteID+=1;
 			} else {
@@ -163,7 +142,7 @@ public class OrderBook {
 		}
 		OrderReport report = new OrderReport(trades, orderInBook);
 		if (orderInBook) {
-			report.setOrder(quote);
+			report.setOrder(time, qtyRemaining, side, orderId, price);
 		}
 		return report;
 	}
@@ -218,7 +197,6 @@ public class OrderBook {
 	
 	
 	public void cancelOrder(String side, int qId, int time) {
-		this.time = time;
 		if (side=="bid") {
 			if (bids.orderExists(qId)) {
 				bids.removeOrderByID(qId);
@@ -308,7 +286,6 @@ public class OrderBook {
 	
 	public String toString() {
 		StringWriter fileStr = new StringWriter();
-		fileStr.write("Time: " + this.time + "\n");
 		fileStr.write(" -------- The Order Book --------\n");
 		fileStr.write("|                                |\n");
 		fileStr.write("|   ------- Bid  Book --------   |\n");

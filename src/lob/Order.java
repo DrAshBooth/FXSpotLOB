@@ -2,7 +2,6 @@ package lob;
 
 public class Order {
 	private int timestamp;
-	private boolean limit;
 	private int quantity;
 	private String side;
 	private double price;
@@ -11,22 +10,14 @@ public class Order {
 	private Order nextOrder;
 	private Order prevOrder;
 	private OrderList oL;
-	
-	public Order(int time, boolean limit, int quantity, int tId, String side) {
-		this(time, limit, quantity, tId, side, null);
-	}	
-	
-	public Order(int time, boolean limit, int quantity, 
-				int tId, String side, Double price) {
-		
+
+	public Order(int orderId, int time, int quantity, int firmId, String side, double price) {
+		this.qId = orderId;
 		this.timestamp = time;
-		this.limit = limit;
 		this.side = side;
 		this.quantity = quantity;
-		if (price!=null) {
-			this.price = (double)price;
-		}
-		this.tId = tId;
+		this.price = price;
+		this.tId = firmId;
 	}
 	
 	public void updateQty(int qty, int tstamp) {
@@ -106,10 +97,6 @@ public class Order {
 
 	public OrderList getoL() {
 		return oL;
-	}
-
-	public boolean isLimit() {
-		return limit;
 	}
 
 	public String getSide() {
