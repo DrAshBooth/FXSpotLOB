@@ -83,23 +83,25 @@ public class OrderBook {
 	}
 	
 	
-	private OrderReport processMarketOrder(Order quote, boolean verbose) {
+	private OrderReport processMarketOrder(int time, String side, 
+											int qty, int takerId, boolean verbose) {
 		ArrayList<Trade> trades = new ArrayList<Trade>();
-		String side = quote.getSide();
-		int qtyRemaining = quote.getQuantity();
+		int qtyRemaining = qty;
 		if (side =="bid") {
 			this.lastOrderSign = 1;
 			while ((qtyRemaining > 0) && (this.asks.getnOrders() > 0)) {
 				OrderList ordersAtBest = this.asks.minPriceList();
-				qtyRemaining = processOrderList(trades, ordersAtBest, qtyRemaining,
-												quote, verbose);
+				qtyRemaining = processOrderList(trades, ordersAtBest, 
+												qtyRemaining, side, takerId, 
+												time, verbose);
 			}
 		}else if(side=="offer") {
 			this.lastOrderSign = -1;
 			while ((qtyRemaining > 0) && (this.bids.getnOrders() > 0)) {
 				OrderList ordersAtBest = this.bids.maxPriceList();
-				qtyRemaining = processOrderList(trades, ordersAtBest, qtyRemaining,
-												quote, verbose);
+				qtyRemaining = processOrderList(trades, ordersAtBest, 
+												qtyRemaining, side, takerId,
+												time, verbose);
 			}
 		}else {
 			throw new IllegalArgumentException("order neither market nor limit: " + 
@@ -168,12 +170,11 @@ public class OrderBook {
 	
 	
 	private int processOrderList(ArrayList<Trade> trades, OrderList orders,
-								int qtyRemaining, Order quote,
-								boolean verbose) {
-		String side = quote.getSide();
+								int qtyRemaining, String side, int takerId, 
+								int time, boolean verbose) {
+		// TODO Have already checked 'side' before this function is called so, 
+		// for efficiency, should probably have a processBestAsks and processBestBids.
 		int buyer, seller;
-		int takerId = quote.gettId();
-		int time = quote.getTimestamp();
 		while ((orders.getLength()>0) && (qtyRemaining>0)) {
 			int qtyTraded = 0;
 			Order headOrder = orders.getHeadOrder();

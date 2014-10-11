@@ -1,0 +1,8 @@
+Actions:
+- limit
+- market
+- cancel
+- modify
+
+Errors:
+	need a standard error protocol
