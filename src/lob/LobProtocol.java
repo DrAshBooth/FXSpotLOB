@@ -21,7 +21,7 @@ public class LobProtocol {
 		this.lob = lob; 
 	}
 	
-	public String processInput(int time, String inputString) {
+	public String processInput(int time, String inputString, boolean verbose) {
 		
 		String outputString = null;
 		
@@ -38,16 +38,23 @@ public class LobProtocol {
 		} else {
 			String action = messageMap.get("action");
 			switch (action) {
-			case "market":
-				// do market stuff
+			case "market": {
+				// Submit a market order to the LOB
 				String side = messageMap.get("side");
 				int qty = Integer.parseInt(messageMap.get("qty"));
 				int takerId = Integer.parseInt(messageMap.get("firmId"));
-				lob.processMarketOrder(time, side, qty, takerId, false);
+				lob.processMarketOrder(time, side, qty, takerId, verbose);
 				break;
-			case "limit":
+				}
+			case "limit": {
 				// do limit stuff
+				String side = messageMap.get("side");
+				int qty = Integer.parseInt(messageMap.get("qty"));
+				int firmId = Integer.parseInt(messageMap.get("firmId"));
+				double price = Double.parseDouble(messageMap.get("price"));
+				lob.processLimitOrder(time, side, qty, price, firmId, verbose);
 				break;
+			}
 			case "cancel":
 				// cancel an order:
 				break;

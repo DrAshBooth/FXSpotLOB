@@ -92,7 +92,7 @@ public class OrderBook {
 	
 	public OrderReport processLimitOrder(int time, String side, int qty, 
 										 double price, int firmId, 
-										 int traderId, boolean verbose) {
+										 boolean verbose) {
 		boolean orderInBook = false;
 		int orderId = this.nextQuoteID;
 		ArrayList<Trade> trades = new ArrayList<Trade>();
@@ -106,7 +106,7 @@ public class OrderBook {
 				OrderList ordersAtBest = asks.minPriceList();
 				qtyRemaining = this.processOrderList(trades, ordersAtBest, 
 													 qtyRemaining, side, 
-													 traderId, time, verbose);
+													 firmId, time, verbose);
 			}
 			// If volume remains, add order to book
 			if (qtyRemaining > 0) {
@@ -125,7 +125,7 @@ public class OrderBook {
 				OrderList ordersAtBest = bids.maxPriceList();
 				qtyRemaining = this.processOrderList(trades, ordersAtBest, 
 						 							 qtyRemaining, side, 
-						 							 traderId, time, verbose);
+						 							 firmId, time, verbose);
 			}
 			// If volume remains, add to book
 			if (qtyRemaining > 0) {
