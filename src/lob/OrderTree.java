@@ -87,26 +87,28 @@ public class OrderTree {
 		this.volume += (order.getQuantity() - originalVol);
 	}
 	
-	public void updateOrder(Order orderUpdate) {
-		int idNum = orderUpdate.getqId();
-		double price = orderUpdate.getPrice();
-		Order order = this.orderMap.get(idNum);
-		int originalVol = order.getQuantity();
-		if (price != order.getPrice()) {
-			// Price has been updated
-			OrderList tempOL = this.priceMap.get(order.getPrice());
-			tempOL.removeOrder(order);
-			if (tempOL.getLength()==0) {
-				removePrice(order.getPrice());
-			}
-			insertOrder(orderUpdate);
-		} else {
-			// The quantity has changed
-			order.updateQty(orderUpdate.getQuantity(), 
-					orderUpdate.getTimestamp());
-		}
-		this.volume += (order.getQuantity() - originalVol);
-	}
+//	public void updateOrder(Order orderUpdate) {
+//		int idNum = orderUpdate.getqId();
+//		double price = orderUpdate.getPrice();
+//		Order order = this.orderMap.get(idNum);
+//		int originalVol = order.getQuantity();
+//		if (price != order.getPrice()) {
+//			// Price has been updated
+//			OrderList tempOL = this.priceMap.get(order.getPrice());
+//			tempOL.removeOrder(order);
+//			if (tempOL.getLength()==0) {
+//				removePrice(order.getPrice());
+//			}
+//			insertOrder(orderUpdate);
+//			//.insertOrder(time, qtyRemaining, firmId, side,
+//		  			  this.nextQuoteID, price);
+//		} else {
+//			// The quantity has changed
+//			order.updateQty(orderUpdate.getQuantity(), 
+//					orderUpdate.getTimestamp());
+//		}
+//		this.volume += (order.getQuantity() - originalVol);
+//	}
 	
 	public void removeOrderByID(int id) {
 		this.nOrders -=1;

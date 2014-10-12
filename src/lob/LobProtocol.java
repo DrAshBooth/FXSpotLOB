@@ -56,7 +56,9 @@ public class LobProtocol {
 				break;
 			}
 			case "cancel":
-				// cancel an order:
+				// Cancel an order:
+				int orderId = Integer.getInteger(messageMap.get("ordeId"));
+				lob.cancelOrder(orderId);
 				break;
 			case "modify":
 				// modify an order

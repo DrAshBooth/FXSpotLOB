@@ -30,6 +30,7 @@ public class OrderBook {
 	private List<Trade> tape = new ArrayList<Trade>();
 	private OrderTree bids = new OrderTree();
 	private OrderTree asks = new OrderTree();
+	private HashMap<Integer, OrderTree> idToBook = new HashMap<Integer, OrderTree>();
 	private double tickSize;
 	private int nextQuoteID;
 	private int lastOrderSign;
@@ -112,6 +113,7 @@ public class OrderBook {
 			if (qtyRemaining > 0) {
 				this.bids.insertOrder(time, qtyRemaining, firmId, side,
 									  this.nextQuoteID, price);
+				this.idToBook.put(this.nextQuoteID, this.bids);
 				orderInBook = true;
 				this.nextQuoteID+=1;
 			} else {
@@ -131,6 +133,7 @@ public class OrderBook {
 			if (qtyRemaining > 0) {
 				this.asks.insertOrder(time, qtyRemaining, firmId, side,
 						  			  this.nextQuoteID, price);
+				this.idToBook.put(this.nextQuoteID, this.asks);
 				orderInBook = true;
 				this.nextQuoteID+=1;
 			} else {
@@ -196,19 +199,10 @@ public class OrderBook {
 	}
 	
 	
-	public void cancelOrder(String side, int qId, int time) {
-		if (side=="bid") {
-			if (bids.orderExists(qId)) {
-				bids.removeOrderByID(qId);
-			}
-		} else if (side=="offer") {
-			if (asks.orderExists(qId)) {
-				asks.removeOrderByID(qId);
-			}
-		} else {
-			System.out.println("cancelOrder() given neither 'bid' nor 'offer'");
-			System.exit(0);
-		}
+	public void cancelOrder(int orderId) {
+		OrderTree book = this.idToBook.get(orderId);
+		book.removeOrderByID(orderId);
+		this.idToBook.remove(orderId);
 	}
 	
 	
