@@ -25,7 +25,7 @@ public class OrderReport {
 	}
 	
 	public void setOrder(int time, int qty, String side,
-			  			 int orderId, double price) {
+			  			 long orderId, double price) {
 		this.order.put("time", String.valueOf(time));
 		this.order.put("qty", String.valueOf(qty));
 		this.order.put("side", String.valueOf(side));

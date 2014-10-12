@@ -5,19 +5,19 @@ public class Order {
 	private int quantity;
 	private String side;
 	private double price;
-	private int qId;
-	private int tId;
+	private long orderId;
+	private int firmId;
 	private Order nextOrder;
 	private Order prevOrder;
 	private OrderList oL;
 
-	public Order(int orderId, int time, int quantity, int firmId, String side, double price) {
-		this.qId = orderId;
+	public Order(long orderId, int time, int quantity, int firmId, String side, double price) {
+		this.orderId = orderId;
 		this.timestamp = time;
 		this.side = side;
 		this.quantity = quantity;
 		this.price = price;
-		this.tId = firmId;
+		this.firmId = firmId;
 	}
 	
 	public void updateQty(int qty, int tstamp) {
@@ -33,8 +33,8 @@ public class Order {
 	public String toString() {
         return Integer.toString(quantity) + "\t@\t" + Double.toString(price) + 
         		"\tt=" + Integer.toString(timestamp) + 
-        		"\tqId=" + Integer.toString(qId) +
-        		"\ttId=" + Integer.toString(tId);
+        		"\torderId=" + Long.toString(orderId) +
+        		"\tfirmId=" + Integer.toString(firmId);
     }
 
 	
@@ -79,20 +79,20 @@ public class Order {
 		this.price = price;
 	}
 
-	public int getqId() {
-		return qId;
+	public long getOrderId() {
+		return orderId;
 	}
 
-	public void setqId(int qId) {
-		this.qId = qId;
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 
-	public int gettId() {
-		return tId;
+	public int getFirmId() {
+		return firmId;
 	}
 
-	public void settId(int tId) {
-		this.tId = tId;
+	public void setFirmId(int firmId) {
+		this.firmId = firmId;
 	}
 
 	public OrderList getoL() {

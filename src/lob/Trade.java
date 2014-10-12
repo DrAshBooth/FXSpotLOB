@@ -8,10 +8,10 @@ public class Trade {
 	private int taker;
 	private int buyer;
 	private int seller;
-	private int orderHit;
+	private long orderHit;
 	
 	public Trade(int time, double price, int qty, int provider, 
-				 int taker, int buyer, int seller, int orderHit) {
+				 int taker, int buyer, int seller, long orderHit) {
 		this.timestamp = time;
 		this.price = price;
 		this.qty = qty;
@@ -19,7 +19,7 @@ public class Trade {
 		this.taker = taker;
 		this.buyer = buyer;
 		this.seller = seller;
-		this.orderHit = orderHit; // the qId of the order that was in the book
+		this.orderHit = orderHit; // the orderId of the order that was in the book
 	}
 	
 	
@@ -86,7 +86,7 @@ public class Trade {
 	}
 
 
-	public int getOrderHit() {
+	public long getOrderHit() {
 		return orderHit;
 	}
 }

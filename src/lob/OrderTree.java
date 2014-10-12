@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class OrderTree {
 	TreeMap<Double, OrderList> priceTree = new TreeMap<Double, OrderList>();
 	HashMap<Double, OrderList> priceMap = new HashMap<Double, OrderList>();;
-	HashMap<Integer, Order> orderMap = new HashMap<Integer, Order>();
+	HashMap<Long, Order> orderMap = new HashMap<Long, Order>();
 	int volume;
 	int nOrders;
 	int depth;
@@ -60,12 +60,12 @@ public class OrderTree {
 		return priceMap.containsKey(price);
 	}
 	
-	public boolean orderExists(int id) {
+	public boolean orderExists(long id) {
 		return orderMap.containsKey(id);
 	}
 	
 	public void insertOrder(int time, int qty, int firmId, String side,
-							int orderId, double price) {
+							long orderId, double price) {
 		if (orderExists(orderId)) {
 			removeOrderByID(orderId);
 		}
@@ -80,15 +80,15 @@ public class OrderTree {
 		volume += order.getQuantity();
 	}
 	
-	public void updateOrderQty(int qty, int qId) {
-		Order order = this.orderMap.get(qId);
+	public void updateOrderQty(int qty, long orderId) {
+		Order order = this.orderMap.get(orderId);
 		int originalVol = order.getQuantity();
 		order.updateQty(qty, order.getTimestamp());
 		this.volume += (order.getQuantity() - originalVol);
 	}
 	
 //	public void updateOrder(Order orderUpdate) {
-//		int idNum = orderUpdate.getqId();
+//		long idNum = orderUpdate.getOrderId();
 //		double price = orderUpdate.getPrice();
 //		Order order = this.orderMap.get(idNum);
 //		int originalVol = order.getQuantity();
@@ -110,7 +110,7 @@ public class OrderTree {
 //		this.volume += (order.getQuantity() - originalVol);
 //	}
 	
-	public void removeOrderByID(int id) {
+	public void removeOrderByID(long id) {
 		this.nOrders -=1;
 		Order order = orderMap.get(id);
 		this.volume -= order.getQuantity();

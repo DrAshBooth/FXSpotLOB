@@ -12,7 +12,7 @@ public class ApplicationServer {
     	OrderBook lob = new OrderBook(0.01);
 		
 		LobProtocol lp = new LobProtocol(lob);
-		lp.processInput("action=limit qty=price price=130.891");
+		lp.processInput(12345, "action=limit qty=price price=130.891", false);
 		
 //		if (args.length != 1) {
 //            System.err.println("Usage: java KnockKnockServer <port number>");

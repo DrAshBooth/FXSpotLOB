@@ -30,9 +30,9 @@ public class OrderBook {
 	private List<Trade> tape = new ArrayList<Trade>();
 	private OrderTree bids = new OrderTree();
 	private OrderTree asks = new OrderTree();
-	private HashMap<Integer, OrderTree> idToBook = new HashMap<Integer, OrderTree>();
+	private HashMap<Long, OrderTree> idToBook = new HashMap<Long, OrderTree>();
 	private double tickSize;
-	private int nextQuoteID;
+	private long nextQuoteID;
 	private int lastOrderSign;
 	
 	public OrderBook(double tickSize) {
@@ -44,7 +44,7 @@ public class OrderBook {
 		tape.clear();
 		bids.reset();
 		asks.reset();
-		nextQuoteID = 0;
+		nextQuoteID = 0L;
 		lastOrderSign=1;
 	}
 	
@@ -95,7 +95,7 @@ public class OrderBook {
 										 double price, int firmId, 
 										 boolean verbose) {
 		boolean orderInBook = false;
-		int orderId = this.nextQuoteID;
+		long orderId = this.nextQuoteID;
 		ArrayList<Trade> trades = new ArrayList<Trade>();
 		int qtyRemaining = qty;
 		price = this.clipPrice(price);
@@ -164,31 +164,31 @@ public class OrderBook {
 				qtyTraded = qtyRemaining;
 				if (side=="offer") {
 					this.bids.updateOrderQty(headOrder.getQuantity()-qtyRemaining, 
-											 headOrder.getqId());
+											 headOrder.getOrderId());
 				} else {
 					this.asks.updateOrderQty(headOrder.getQuantity()-qtyRemaining, 
-											 headOrder.getqId());
+											 headOrder.getOrderId());
 				}
 				qtyRemaining = 0;
 			} else {
 				qtyTraded = headOrder.getQuantity();
 				if (side=="offer") {
-					this.bids.removeOrderByID(headOrder.getqId());
+					this.bids.removeOrderByID(headOrder.getOrderId());
 				} else {
-					this.asks.removeOrderByID(headOrder.getqId());
+					this.asks.removeOrderByID(headOrder.getOrderId());
 				}
 				qtyRemaining -= qtyTraded;
 			}
 			if (side=="offer") {
-				buyer = headOrder.gettId();
+				buyer = headOrder.getFirmId();
 				seller = takerId;
 			} else {
 				buyer = takerId;
-				seller = headOrder.gettId();
+				seller = headOrder.getFirmId();
 			}
 			Trade trade = new Trade(time, headOrder.getPrice(), qtyTraded, 
-									headOrder.gettId(),takerId, buyer, seller, 
-									headOrder.getqId());
+									headOrder.getFirmId(),takerId, buyer, seller, 
+									headOrder.getOrderId());
 			trades.add(trade);
 			this.tape.add(trade);
 			if (verbose) {
@@ -206,7 +206,7 @@ public class OrderBook {
 	}
 	
 	
-	public void modifyOrder(int qId, HashMap<String, String> quote) {
+	public void modifyOrder(long orderId, HashMap<String, String> quote) {
 		// TODO implement modify order
 		// Remember if price is changed must check for clearing.
 	}
