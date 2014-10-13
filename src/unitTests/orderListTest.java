@@ -11,7 +11,7 @@ public class orderListTest {
 		OrderList ol = new OrderList();
 		
 		// create and order
-		Order o = new Order(999999999999999999L, 1, 1, 1, "bid", 1);
+		Order o = new Order(999999999999999999L, 1, 1, "TRADEBOT", "bid", 1);
 		
 		// add order to orderList
 		System.out.println("Add one order");
@@ -30,7 +30,7 @@ public class orderListTest {
 		
 		// Add a second order
 		System.out.println("Add a second order");
-		ol.appendOrder(new Order(999999999999999998L, 2, 3, 4, "bid", 1.07891));
+		ol.appendOrder(new Order(999999999999999998L, 2, 3, "HULL", "bid", 1.07891));
 		System.out.println(ol);
 		System.out.println("Head order:");
 		System.out.println(ol.getHeadOrder());

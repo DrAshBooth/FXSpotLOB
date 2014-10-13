@@ -4,14 +4,14 @@ public class Trade {
 	private int timestamp;
 	private double price;
 	private int qty;
-	private int provider;
-	private int taker;
-	private int buyer;
-	private int seller;
+	private String provider;
+	private String taker;
+	private String buyer;
+	private String seller;
 	private long orderHit;
 	
-	public Trade(int time, double price, int qty, int provider, 
-				 int taker, int buyer, int seller, long orderHit) {
+	public Trade(int time, double price, int qty, String provider, 
+				 String taker, String buyer, String seller, long orderHit) {
 		this.timestamp = time;
 		this.price = price;
 		this.qty = qty;
@@ -63,25 +63,25 @@ public class Trade {
 
 
 
-	public int getProvider() {
+	public String getProvider() {
 		return provider;
 	}
 
 
 
-	public int getTaker() {
+	public String getTaker() {
 		return taker;
 	}
 
 
 
-	public int getBuyer() {
+	public String getBuyer() {
 		return buyer;
 	}
 
 
 
-	public int getSeller() {
+	public String getSeller() {
 		return seller;
 	}
 

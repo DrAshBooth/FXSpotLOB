@@ -9,7 +9,7 @@ public class orderTests {
 		//Order o = new Order(orderId, time, quantity, firmId, side, price)
 
 		
-		Order o = new Order(999999999999999999L, 1, 1, 1, "bid", 1);
+		Order o = new Order(999999999999999999L, 1, 1, "GETCO", "bid", 1);
 		
 		System.out.println(o);
 		

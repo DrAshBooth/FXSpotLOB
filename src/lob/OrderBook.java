@@ -63,7 +63,7 @@ public class OrderBook {
 	}
 	
 	public OrderReport processMarketOrder(int time, String side, 
-											int qty, int takerId, boolean verbose) {
+											int qty, String takerId, boolean verbose) {
 		ArrayList<Trade> trades = new ArrayList<Trade>();
 		int qtyRemaining = qty;
 		if (side =="bid") {
@@ -92,7 +92,7 @@ public class OrderBook {
 	
 	
 	public OrderReport processLimitOrder(int time, String side, int qty, 
-										 double price, int firmId, 
+										 double price, String firmId, 
 										 boolean verbose) {
 		boolean orderInBook = false;
 		long orderId = this.nextQuoteID;
@@ -152,11 +152,11 @@ public class OrderBook {
 	
 	
 	private int processOrderList(ArrayList<Trade> trades, OrderList orders,
-								int qtyRemaining, String side, int takerId, 
+								int qtyRemaining, String side, String takerId, 
 								int time, boolean verbose) {
 		// TODO Have already checked 'side' before this function is called so, 
 		// for efficiency, should probably have a processBestAsks and processBestBids.
-		int buyer, seller;
+		String buyer, seller;
 		while ((orders.getLength()>0) && (qtyRemaining>0)) {
 			int qtyTraded = 0;
 			Order headOrder = orders.getHeadOrder();

@@ -6,12 +6,12 @@ public class Order {
 	private String side;
 	private double price;
 	private long orderId;
-	private int firmId;
+	private String firmId;
 	private Order nextOrder;
 	private Order prevOrder;
 	private OrderList oL;
 
-	public Order(long orderId, int time, int quantity, int firmId, String side, double price) {
+	public Order(long orderId, int time, int quantity, String firmId, String side, double price) {
 		this.orderId = orderId;
 		this.timestamp = time;
 		this.side = side;
@@ -34,7 +34,7 @@ public class Order {
         return Integer.toString(quantity) + "\t@\t" + Double.toString(price) + 
         		"\tt=" + Integer.toString(timestamp) + 
         		"\torderId=" + Long.toString(orderId) +
-        		"\tfirmId=" + Integer.toString(firmId);
+        		"\tfirmId=" + firmId;
     }
 
 	
@@ -87,11 +87,11 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public int getFirmId() {
+	public String getFirmId() {
 		return firmId;
 	}
 
-	public void setFirmId(int firmId) {
+	public void setFirmId(String firmId) {
 		this.firmId = firmId;
 	}
 

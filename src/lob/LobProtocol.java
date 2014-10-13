@@ -42,7 +42,7 @@ public class LobProtocol {
 				// Submit a market order to the LOB
 				String side = messageMap.get("side");
 				int qty = Integer.parseInt(messageMap.get("qty"));
-				int takerId = Integer.parseInt(messageMap.get("firmId"));
+				String takerId = messageMap.get("firmId");
 				lob.processMarketOrder(time, side, qty, takerId, verbose);
 				break;
 				}
@@ -50,7 +50,7 @@ public class LobProtocol {
 				// do limit stuff
 				String side = messageMap.get("side");
 				int qty = Integer.parseInt(messageMap.get("qty"));
-				int firmId = Integer.parseInt(messageMap.get("firmId"));
+				String firmId = messageMap.get("firmId");
 				double price = Double.parseDouble(messageMap.get("price"));
 				lob.processLimitOrder(time, side, qty, price, firmId, verbose);
 				break;

@@ -3,6 +3,7 @@ package lob;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.lang.IllegalArgumentException;
 
 public class OrderTree {
 	TreeMap<Double, OrderList> priceTree = new TreeMap<Double, OrderList>();
@@ -36,21 +37,21 @@ public class OrderTree {
 		return priceMap.get(price);
 	}
 	
-	public Order getOrder(int id) {
-		/*
-		 * Returns the order given the order id
-		 */
-		return orderMap.get(id);
-	}
+//	public Order getOrder(int id) {
+//		/*
+//		 * Returns the order given the order id
+//		 */
+//		return orderMap.get(id);
+//	}
 	
-	public void createPrice(double price) {
+	private void createPrice(double price) {
 		depth += 1;
 		OrderList newList = new OrderList();
 		priceTree.put(price, newList);
 		priceMap.put(price, newList);
 	}
 	
-	public void removePrice(double price) {
+	private void removePrice(double price) {
 		depth -= 1;
 		priceTree.remove(price);
 		priceMap.remove(price);
@@ -60,14 +61,18 @@ public class OrderTree {
 		return priceMap.containsKey(price);
 	}
 	
-	public boolean orderExists(long id) {
+	private boolean orderExists(long id) {
 		return orderMap.containsKey(id);
 	}
 	
-	public void insertOrder(int time, int qty, int firmId, String side,
-							long orderId, double price) {
+	public void insertOrder(int time, int qty, String firmId, String side,
+							long orderId, double price) throws IllegalArgumentException {
 		if (orderExists(orderId)) {
+			// TODO is this the best way to handle this??
 			removeOrderByID(orderId);
+		}
+		if (qty<=0) {
+			throw new IllegalArgumentException("Must enter possitive qty");
 		}
 		nOrders += 1;
 		if (!priceExists(price)) {
